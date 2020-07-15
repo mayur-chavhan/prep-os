@@ -1,0 +1,19 @@
+---
+- name: Transfer and execute a script.
+  hosts: lemp
+  remote_user: test_user
+  tasks:
+    - name: Transfer Prep-OS Script 
+      copy: src=prep_distro.sh dest=/tmp/prep_distro.sh mode=0777
+ 
+    - name: Executing the script
+      command: bash /tmp/prep_distro.sh
+      register: output
+
+    - debug: var=output.stdout_lines
+
+    - name: Deleting Leftovers..
+      file:
+        path: /tmp/prep_distro.sh
+        state: absent
+
